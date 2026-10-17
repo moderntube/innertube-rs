@@ -333,7 +333,8 @@ pub(super) fn shorts_lockup(sl: &Value) -> Option<SearchItem> {
     Some(SearchItem::Short {
         title: sl["overlayMetadata"]["primaryText"]["content"].as_str().unwrap_or_default().to_string(),
         views: sl["overlayMetadata"]["secondaryText"]["content"].as_str().map(str::to_string),
-        thumbnail: last_thumb(&sl["thumbnail"]).or_else(|| reel.thumbnail.clone()),
+        thumbnail: last_thumb(&sl["thumbnailViewModel"]["thumbnailViewModel"]["image"])
+            .or_else(|| reel.thumbnail.clone()),
         reel,
     })
 }
