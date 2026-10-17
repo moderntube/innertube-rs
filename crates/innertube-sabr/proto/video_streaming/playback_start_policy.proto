@@ -1,0 +1,15 @@
+syntax = "proto2";
+package video_streaming;
+
+message PlaybackStartPolicy {
+  message ReadaheadPolicy {
+    optional int32 min_readahead_ms = 2;
+    optional int32 min_bandwidth_bytes_per_sec = 1;
+  }
+
+  // base.js (`Zc`) reads both of these as ARRAYS of brackets (picks the
+  // minimum `min_readahead_ms` among brackets whose `min_bandwidth_bytes_per_sec`
+  // qualifies) — not a single optional value, despite the field number reuse below.
+  repeated ReadaheadPolicy start_min_readahead_policy = 1;
+  repeated ReadaheadPolicy resume_min_readahead_policy = 2;
+}

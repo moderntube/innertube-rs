@@ -1,0 +1,42 @@
+[package]
+name = "innertube"
+version = "0.0.0"
+description = "Client for YouTube's InnerTube API with SABR streaming and seekable VOD and live readers"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories = ["api-bindings", "multimedia::video"]
+publish = false
+
+# The umbrella crate: re-exports the full library surface (auth + InnerTube API +
+# SABR streaming) so a consumer (the GTK app, the CLI) links one crate.
+
+[features]
+default = ["streaming"]
+streaming = ["dep:innertube-js", "dep:innertube-pot", "dep:innertube-sabr"]
+
+[dependencies]
+innertube-js = { path = "../innertube-js", optional = true }
+innertube-pot = { path = "../innertube-pot", optional = true }
+innertube-sabr = { path = "../innertube-sabr", optional = true }
+tokio = { version = "1", features = ["rt", "macros", "time", "sync"] }
+thiserror = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+base64 = "0.22"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "json", "gzip", "brotli", "cookies"] }
+bytes = "1"
+tracing = "0.1"
+# SHA-1 for the SAPISIDHASH auth header. ring is already in-tree (rustls backend),
+# so this adds no new compiled dependency.
+ring = "0.17"
+
+[[test]]
+name = "prewarm"
+required-features = ["streaming"]
+
+[dev-dependencies]
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }

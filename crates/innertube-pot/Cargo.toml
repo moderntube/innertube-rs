@@ -1,0 +1,24 @@
+[package]
+name = "innertube-pot"
+version = "0.0.0"
+description = "YouTube PO-token providers: in-process BotGuard or a bgutil HTTP server"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories = ["api-bindings"]
+publish = false
+
+[dependencies]
+botguard = { package = "botguard-rs", git = "https://github.com/moderntube/botguard-rs", rev = "1c36eb6" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+tracing = "0.1"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "json"] }
+tokio = { version = "1", features = ["rt", "sync"] }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }

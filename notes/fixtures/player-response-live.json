@@ -1,0 +1,278 @@
+{
+  "playabilityStatus": {
+    "status": "OK",
+    "playableInEmbed": true,
+    "liveStreamability": {
+      "liveStreamabilityRenderer": {
+        "videoId": "8bx5-SueICY",
+        "broadcastId": "1",
+        "pollDelayMs": "15000"
+      }
+    },
+    "miniplayer": {
+      "miniplayerRenderer": {
+        "playbackMode": "PLAYBACK_MODE_ALLOW"
+      }
+    },
+    "contextParams": "Q0FFU0FnZ0M="
+  },
+  "streamingData": {
+    "expiresInSeconds": "21540",
+    "adaptiveFormats": [
+      {
+        "itag": 299,
+        "url": "https://rr2---sn-xxxxxxxxxx-xxxxx.googlevideo.com/<redacted-path+query>",
+        "mimeType": "video/mp4; codecs=\"avc1.4d402a\"",
+        "bitrate": 5144200,
+        "width": 1920,
+        "height": 1080,
+        "quality": "hd1080",
+        "fps": 60,
+        "qualityLabel": "1080p60",
+        "projectionType": "RECTANGULAR",
+        "targetDurationSec": 1,
+        "maxDvrDurationSec": 43200,
+        "qualityOrdinal": "QUALITY_ORDINAL_1080P"
+      },
+      {
+        "itag": 303,
+        "url": "https://rr2---sn-xxxxxxxxxx-xxxxx.googlevideo.com/<redacted-path+query>",
+        "mimeType": "video/webm; codecs=\"vp9\"",
+        "bitrate": 2056000,
+        "width": 1920,
+        "height": 1080,
+        "quality": "hd1080",
+        "fps": 60,
+        "qualityLabel": "1080p60",
+        "projectionType": "RECTANGULAR",
+        "targetDurationSec": 1,
+        "maxDvrDurationSec": 43200,
+        "qualityOrdinal": "QUALITY_ORDINAL_1080P"
+      },
+      {
+        "itag": 298,
+        "url": "https://rr2---sn-xxxxxxxxxx-xxxxx.googlevideo.com/<redacted-path+query>",
+        "mimeType": "video/mp4; codecs=\"avc1.4d4020\"",
+        "bitrate": 2639005,
+        "width": 1280,
+        "height": 720,
+        "quality": "hd720",
+        "fps": 60,
+        "qualityLabel": "720p60",
+        "projectionType": "RECTANGULAR",
+        "targetDurationSec": 1,
+        "maxDvrDurationSec": 43200,
+        "qualityOrdinal": "QUALITY_ORDINAL_720P"
+      },
+      {
+        "itag": 302,
+        "url": "https://rr2---sn-xxxxxxxxxx-xxxxx.googlevideo.com/<redacted-path+query>",
+        "mimeType": "video/webm; codecs=\"vp9\"",
+        "bitrate": 988000,
+        "width": 1280,
+        "height": 720,
+        "quality": "hd720",
+        "fps": 60,
+        "qualityLabel": "720p60",
+        "projectionType": "RECTANGULAR",
+        "targetDurationSec": 1,
+        "maxDvrDurationSec": 43200,
+        "qualityOrdinal": "QUALITY_ORDINAL_720P"
+      },
+      {
+        "itag": 135,
+        "url": "https://rr2---sn-xxxxxxxxxx-xxxxx.googlevideo.com/<redacted-path+query>",
+        "mimeType": "video/mp4; codecs=\"avc1.4d401f\"",
+        "bitrate": 1077445,
+        "width": 854,
+        "height": 480,
+        "quality": "large",
+        "fps": 30,
+        "qualityLabel": "480p",
+        "projectionType": "RECTANGULAR",
+        "targetDurationSec": 1,
+        "maxDvrDurationSec": 43200,
+        "qualityOrdinal": "QUALITY_ORDINAL_480P"
+      },
+      {
+        "itag": 244,
+        "url": "https://rr2---sn-xxxxxxxxxx-xxxxx.googlevideo.com/<redacted-path+query>",
+        "mimeType": "video/webm; codecs=\"vp9\"",
+        "bitrate": 415000,
+        "width": 854,
+        "height": 480,
+        "quality": "large",
+        "fps": 30,
+        "qualityLabel": "480p",
+        "projectionType": "RECTANGULAR",
+        "targetDurationSec": 1,
+        "maxDvrDurationSec": 43200,
+        "qualityOrdinal": "QUALITY_ORDINAL_480P"
+      },
+      {
+        "itag": 134,
+        "url": "https://rr2---sn-xxxxxxxxxx-xxxxx.googlevideo.com/<redacted-path+query>",
+        "mimeType": "video/mp4; codecs=\"avc1.4d401e\"",
+        "bitrate": 772630,
+        "width": 640,
+        "height": 360,
+        "quality": "medium",
+        "fps": 30,
+        "qualityLabel": "360p",
+        "projectionType": "RECTANGULAR",
+        "targetDurationSec": 1,
+        "maxDvrDurationSec": 43200,
+        "highReplication": true,
+        "qualityOrdinal": "QUALITY_ORDINAL_360P"
+      },
+      {
+        "itag": 243,
+        "url": "https://rr2---sn-xxxxxxxxxx-xxxxx.googlevideo.com/<redacted-path+query>",
+        "mimeType": "video/webm; codecs=\"vp9\"",
+        "bitrate": 240000,
+        "width": 640,
+        "height": 360,
+        "quality": "medium",
+        "fps": 30,
+        "qualityLabel": "360p",
+        "projectionType": "RECTANGULAR",
+        "targetDurationSec": 1,
+        "maxDvrDurationSec": 43200,
+        "qualityOrdinal": "QUALITY_ORDINAL_360P"
+      },
+      {
+        "itag": 133,
+        "url": "https://rr2---sn-xxxxxxxxxx-xxxxx.googlevideo.com/<redacted-path+query>",
+        "mimeType": "video/mp4; codecs=\"avc1.4d4015\"",
+        "bitrate": 419256,
+        "width": 426,
+        "height": 240,
+        "quality": "small",
+        "fps": 30,
+        "qualityLabel": "240p",
+        "projectionType": "RECTANGULAR",
+        "targetDurationSec": 1,
+        "maxDvrDurationSec": 43200,
+        "qualityOrdinal": "QUALITY_ORDINAL_240P"
+      },
+      {
+        "itag": 242,
+        "url": "https://rr2---sn-xxxxxxxxxx-xxxxx.googlevideo.com/<redacted-path+query>",
+        "mimeType": "video/webm; codecs=\"vp9\"",
+        "bitrate": 139000,
+        "width": 426,
+        "height": 240,
+        "quality": "small",
+        "fps": 30,
+        "qualityLabel": "240p",
+        "projectionType": "RECTANGULAR",
+        "targetDurationSec": 1,
+        "maxDvrDurationSec": 43200,
+        "qualityOrdinal": "QUALITY_ORDINAL_240P"
+      },
+      {
+        "itag": 160,
+        "url": "https://rr2---sn-xxxxxxxxxx-xxxxx.googlevideo.com/<redacted-path+query>",
+        "mimeType": "video/mp4; codecs=\"avc1.4d400c\"",
+        "bitrate": 192223,
+        "width": 256,
+        "height": 144,
+        "quality": "tiny",
+        "fps": 30,
+        "qualityLabel": "144p",
+        "projectionType": "RECTANGULAR",
+        "targetDurationSec": 1,
+        "maxDvrDurationSec": 43200,
+        "qualityOrdinal": "QUALITY_ORDINAL_144P"
+      },
+      {
+        "itag": 278,
+        "url": "https://rr2---sn-xxxxxxxxxx-xxxxx.googlevideo.com/<redacted-path+query>",
+        "mimeType": "video/webm; codecs=\"vp9\"",
+        "bitrate": 80000,
+        "width": 256,
+        "height": 144,
+        "quality": "tiny",
+        "fps": 30,
+        "qualityLabel": "144p",
+        "projectionType": "RECTANGULAR",
+        "targetDurationSec": 1,
+        "maxDvrDurationSec": 43200,
+        "qualityOrdinal": "QUALITY_ORDINAL_144P"
+      },
+      {
+        "itag": 140,
+        "url": "https://rr2---sn-xxxxxxxxxx-xxxxx.googlevideo.com/<redacted-path+query>",
+        "mimeType": "audio/mp4; codecs=\"mp4a.40.2\"",
+        "bitrate": 144000,
+        "quality": "tiny",
+        "projectionType": "RECTANGULAR",
+        "targetDurationSec": 1,
+        "maxDvrDurationSec": 43200,
+        "highReplication": true,
+        "audioQuality": "AUDIO_QUALITY_MEDIUM",
+        "audioSampleRate": "44100",
+        "audioChannels": 2,
+        "qualityOrdinal": "QUALITY_ORDINAL_UNKNOWN"
+      }
+    ],
+    "hlsManifestUrl": "https://manifest.googlevideo.com/<redacted-path+query>",
+    "serverAbrStreamingUrl": "https://rr2---sn-xxxxxxxxxx-xxxxx.googlevideo.com/<redacted-path+query>"
+  },
+  "videoDetails": {
+    "videoId": "8bx5-SueICY",
+    "title": "\ud83d\udd34Donut Smp Live\u2503\ud83d\udcb7400M Per Base!!!\ud83d\udcb7\u2503Road To 100B\u2503",
+    "lengthSeconds": "0",
+    "isLive": true,
+    "keywords": [
+      "#minecraft",
+      "#donutsmp",
+      "#drdonut",
+      "Maur0cpvp"
+    ],
+    "channelId": "UCOOVkKjllyBTiGzmlq2c-Mw",
+    "isOwnerViewing": false,
+    "shortDescription": "Only donate above 18+\nDonate Here:  https://www.tipeeestream.com/gwn-mauro/donation\n\nJoin Here My Discord Server:\nhttps://discord.gg/WyRvNSt8K",
+    "isCrawlable": true,
+    "isLiveDvrEnabled": true,
+    "thumbnail": {
+      "thumbnails": [
+        {
+          "url": "https://i.ytimg.com/<redacted-path+query>",
+          "width": 168,
+          "height": 94
+        },
+        {
+          "url": "https://i.ytimg.com/<redacted-path+query>",
+          "width": 196,
+          "height": 110
+        },
+        {
+          "url": "https://i.ytimg.com/<redacted-path+query>",
+          "width": 246,
+          "height": 138
+        },
+        {
+          "url": "https://i.ytimg.com/<redacted-path+query>",
+          "width": 336,
+          "height": 188
+        },
+        {
+          "url": "https://i.ytimg.com/<redacted-path+query>",
+          "width": 1920,
+          "height": 1080
+        }
+      ]
+    },
+    "liveChunkReadahead": 2,
+    "allowRatings": true,
+    "viewCount": "1945",
+    "author": "Maur0cpvp",
+    "isLowLatencyLiveStream": true,
+    "isPrivate": false,
+    "isUnpluggedCorpus": false,
+    "latencyClass": "MDE_STREAM_OPTIMIZATIONS_RENDERER_LATENCY_ULTRA_LOW",
+    "isLiveContent": true,
+    "isTvfilmVideo": false
+  }
+}

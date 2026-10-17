@@ -1,0 +1,16 @@
+/target
+**/*.rs.bk
+
+# Raw mitmproxy captures and player-source dumps hold cookies, tokens and account
+# data, and are too large for git. Scrub before anything goes into a fixture.
+*.flow
+captures/
+dumps/
+docs/dumps/
+
+# Local multi-MB capture fixtures.
+.fixtures/
+
+__pycache__/
+nohup.out
+*.m4a

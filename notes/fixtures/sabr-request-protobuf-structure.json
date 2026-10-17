@@ -1,0 +1,66 @@
+{
+  "note": "VideoPlaybackAbrRequest top-level fields. Values redacted; lengths kept. PO token is embedded here, not in the URL.",
+  "request_body_bytes": 1535,
+  "fields": [
+    {
+      "field": 1,
+      "wire": "len",
+      "value_or_len": "105B"
+    },
+    {
+      "field": 3,
+      "wire": "len",
+      "value_or_len": "26B"
+    },
+    {
+      "field": 3,
+      "wire": "len",
+      "value_or_len": "26B"
+    },
+    {
+      "field": 5,
+      "wire": "len",
+      "value_or_len": "1127B"
+    },
+    {
+      "field": 16,
+      "wire": "len",
+      "value_or_len": "7B"
+    },
+    {
+      "field": 17,
+      "wire": "len",
+      "value_or_len": "7B"
+    },
+    {
+      "field": 17,
+      "wire": "len",
+      "value_or_len": "7B"
+    },
+    {
+      "field": 17,
+      "wire": "len",
+      "value_or_len": "7B"
+    },
+    {
+      "field": 17,
+      "wire": "len",
+      "value_or_len": "7B"
+    },
+    {
+      "field": 17,
+      "wire": "len",
+      "value_or_len": "7B"
+    },
+    {
+      "field": 17,
+      "wire": "len",
+      "value_or_len": "7B"
+    },
+    {
+      "field": 19,
+      "wire": "len",
+      "value_or_len": "147B"
+    }
+  ]
+}

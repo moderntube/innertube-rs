@@ -1,0 +1,19 @@
+[workspace]
+resolver = "2"
+members = ["crates/innertube", "crates/innertube-cli","crates/innertube-js", "crates/innertube-pot", "crates/innertube-sabr"]
+
+[workspace.package]
+edition = "2021"
+rust-version = "1.95"
+license = "MIT"
+repository = "https://github.com/moderntube/innertube-rs"
+readme = "README.md"
+keywords = ["youtube", "innertube", "sabr", "streaming", "video"]
+
+# The n-sig solver runs meriyah (a JS parser) over a multi-MB base.js inside
+# QuickJS — CPU-bound interpreter work. Compile the QuickJS engine + bindings
+# optimized even in dev builds, or the solve takes ~10s instead of ~1-2s.
+[profile.dev.package.rquickjs-sys]
+opt-level = 3
+[profile.dev.package.rquickjs-core]
+opt-level = 3

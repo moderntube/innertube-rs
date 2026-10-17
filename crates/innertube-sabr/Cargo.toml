@@ -1,0 +1,20 @@
+[package]
+name = "innertube-sabr"
+version = "0.0.0"
+description = "UMP codec, SABR protobufs and the SABR request engine for YouTube streaming"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories = ["multimedia::video", "parser-implementations"]
+publish = false
+
+[dependencies]
+prost = "0.13"
+bytes = "1"
+
+[build-dependencies]
+prost-build = "0.13"
+protox = "0.7"

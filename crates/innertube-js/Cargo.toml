@@ -1,0 +1,29 @@
+[package]
+name = "innertube-js"
+version = "0.0.0"
+description = "YouTube n-signature solver running yt-dlp's ejs in embedded QuickJS"
+edition.workspace = true
+rust-version.workspace = true
+license = "MIT AND Unlicense"
+repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories = ["multimedia::video"]
+publish = false
+
+[dependencies]
+# Native n-sig pass (src/native.rs). oxc parses base.js in ~90ms where the
+# vendored meriyah-in-QuickJS pass takes ~8.7s; ejs stays as the fallback.
+oxc_allocator = "0.145"
+oxc_ast = "0.145"
+oxc_parser = "0.145"
+oxc_span = "0.145"
+rquickjs = "0.12"
+serde_json = "1"
+thiserror = "2"
+tracing = "0.1"
+tokio = { version = "1", features = ["rt"] }
+
+[dev-dependencies]
+# `macros` only for #[tokio::test] in the differential test; the lib needs just `rt`.
+tokio = { version = "1", features = ["rt", "macros"] }

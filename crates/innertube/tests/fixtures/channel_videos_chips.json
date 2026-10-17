@@ -1,0 +1,44 @@
+{
+  "_comment": "Channel-tab sort chips (chipBarViewModel/chipViewModel) + a video lockup + the grid scroll continuation. The chip label is `accessibilityLabel` (corrected 2026-07-17 — the earlier `text` shape was wrong and let the sort bar silently render empty against real responses). Placeholder tokens (session-scoped, not secrets, kept out of git).",
+  "contents": {
+    "chipBarViewModel": {
+      "chips": [
+        {
+          "chipViewModel": {
+            "accessibilityLabel": "Latest",
+            "selected": true,
+            "tapCommand": { "innertubeCommand": { "continuationCommand": { "token": "TOKEN_LATEST" } } }
+          }
+        },
+        {
+          "chipViewModel": {
+            "accessibilityLabel": "Popular",
+            "selected": false,
+            "tapCommand": { "innertubeCommand": { "continuationCommand": { "token": "TOKEN_POPULAR" } } }
+          }
+        },
+        {
+          "chipViewModel": {
+            "accessibilityLabel": "Oldest",
+            "selected": false,
+            "tapCommand": { "innertubeCommand": { "continuationCommand": { "token": "TOKEN_OLDEST" } } }
+          }
+        }
+      ]
+    },
+    "items": [
+      {
+        "lockupViewModel": {
+          "contentType": "LOCKUP_CONTENT_TYPE_VIDEO",
+          "contentId": "vid12345678",
+          "metadata": { "lockupMetadataViewModel": { "title": { "content": "Test Video Title" } } }
+        }
+      },
+      {
+        "continuationItemRenderer": {
+          "continuationEndpoint": { "continuationCommand": { "token": "SCROLL_TOKEN" } }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+[package]
+name = "innertube-cli"
+version = "0.0.0"
+description = "The `it` dev CLI for innertube: SABR smoke tests, playback to stdout and API probes"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories = ["command-line-utilities", "multimedia::video"]
+publish = false
+
+[lib]
+
+[[bin]]
+name = "it"
+path = "src/it.rs"
+test = false
+
+[dependencies]
+innertube = { path = "../innertube" }
+innertube-js = { path = "../innertube-js" }
+innertube-pot = { path = "../innertube-pot" }
+innertube-sabr = { path = "../innertube-sabr" }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time"] }
+clap = { version = "4", features = ["derive"] }
+serde_json = "1"
+tracing-subscriber = { version = "0.3", default-features = false, features = ["fmt", "env-filter", "ansi"] }
+# Browser-cookie acquisition lives in the CONSUMER (not the library): read
+# LibreWolf/Firefox cookies.sqlite. `bundled` compiles SQLite from source (musl-ok;
+# the workspace already builds C via rquickjs).
+rusqlite = { version = "0.32", features = ["bundled"] }
