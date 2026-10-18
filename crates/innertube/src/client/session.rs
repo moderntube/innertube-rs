@@ -407,9 +407,8 @@ impl Session {
         .await
     }
 
-    /// Search YouTube. `params` is the optional base64 filter blob (sort/type/
-    /// duration); pass `None` for a default relevance search. Returns typed results
-    /// + a continuation token for the next page.
+    /// Search YouTube. `params` is a [`SearchFilter::params`] from an earlier page, or `None`
+    /// for a default relevance search.
     pub async fn search(&self, query: &str, params: Option<&str>) -> Result<SearchResults, Error> {
         let v = self.youtubei_post("search", actions::search_body(&self.client, query, params)).await?;
         Ok(api::parse_search(&v))

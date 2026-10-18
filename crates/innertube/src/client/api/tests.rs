@@ -559,6 +559,22 @@ fn parse_channel_extracts_header_tabs_and_videos() {
 }
 
 #[test]
+fn parse_search_reads_the_filter_dialog_of_a_filtered_response() {
+    let v: serde_json::Value =
+        serde_json::from_str(include_str!("../../../tests/fixtures/search_filters_videos_selected.json")).unwrap();
+    let r = parse_search(&v);
+    let titles: Vec<&str> = r.filters.iter().map(|g| g.title.as_str()).collect();
+    assert_eq!(titles, vec!["Type", "Duration", "Upload date", "Features", "Prioritize"]);
+    let videos = &r.filters[0].filters[0];
+    assert_eq!((videos.label.as_str(), videos.selected), ("Videos", true));
+    assert_eq!(videos.params.as_deref(), Some("EgA%3D"), "a selected option clears itself");
+    let today = &r.filters[2].filters[0];
+    assert_eq!(today.params.as_deref(), Some("EgQIAhAB"), "Today combined with Videos");
+    let relevance = &r.filters[4].filters[0];
+    assert!(relevance.selected && relevance.params.is_none(), "the selected default has no endpoint");
+}
+
+#[test]
 fn parse_channel_videos_extracts_sort_chips_and_keeps_scroll_continuation() {
     let v: serde_json::Value =
         serde_json::from_str(include_str!("../../../tests/fixtures/channel_videos_chips.json")).unwrap();

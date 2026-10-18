@@ -262,3 +262,19 @@ A session provisioned by a `player()` POST starts with SABR rounds that carry no
 player response embedded in the server-rendered watch page yields media on the first request.
 
 Status: unverified
+
+### IT-029 Search filters come from the response's filter dialog
+
+A first `search` page carries `header.searchHeaderRenderer.searchFilterButton`, whose
+`openPopupAction` holds `searchFilterOptionsDialogRenderer.groups[]` (Type, Duration, Upload
+date, Features, Prioritize). Each `searchFilterRenderer` has a `label` and either a
+`navigationEndpoint.searchEndpoint.params` or a `status`. The client sends that `params`
+verbatim (still percent-encoded) as the next `search` call's `params`. In a filtered
+response, every option's `params` already combines the filters in force. A selected option
+is `FILTER_STATUS_SELECTED`: a selected type carries `params` that clear it (Videos:
+`EgA%3D`); a selected upload date and the default Relevance carry none. Options that do not
+combine with the filters in force are `FILTER_STATUS_DISABLED` with no endpoint (Channels
+and Playlists under This week).
+
+Status: verified: capture 2026-05-30, live `search` with `params` `EgIQAQ%3D%3D` and
+`EgIIAw%3D%3D` 2026-10-18
