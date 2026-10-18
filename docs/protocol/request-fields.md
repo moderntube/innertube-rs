@@ -193,12 +193,15 @@ Status: verified: capture 2026-07-16
 
 ### REQ-017 Auto quality sends the full ladder and leaves the manual fields out
 
-In automatic quality, `preferred_video_format_ids` is the whole ladder on every request,
-`sticky_resolution` is 0, and fields 13, 14 and 16 are absent. When the user limits quality
-to a range, `sticky_resolution` carries the range's top (1080) and the ladder stays full; the
-server then adapts below that cap.
+In automatic quality, `sticky_resolution` is 0 and fields 13, 14 and 16 are absent. The
+May to September captures send the whole ladder in `preferred_video_format_ids` on every
+request. The October 2026 player (0229cd64) sends no video preference on VOD: its request
+builder leaves field 17 empty unless a pick is locked. Our engine sends none on VOD and the
+full ladder on live, where no capture of the empty list exists yet. When the user limits quality to a range, `sticky_resolution`
+carries the range's top (1080) and the ladder stays full; the server then adapts below that
+cap.
 
-Status: verified: capture 2026-07-16
+Status: verified: capture 2026-07-16, 2026-10-17, base.js 0229cd64
 
 ### REQ-018 A manual quality pick collapses the ladder and empties the buffered ranges
 
@@ -316,3 +319,14 @@ player often interleaves AV1 and VP9 by height (`401, 315, 400, 308, 399, 303, .
 request of the July sessions). In those sessions the server served AV1 rungs only.
 
 Status: verified: capture 2026-05-29, 2026-05-30, 2026-07-16, 2026-08-18
+
+### REQ-031 A return to Auto clears the manual fields and keeps the buffered ranges
+
+The first request after Auto is picked from the quality menu drops fields 13, 14 and 16,
+sets `sticky_resolution` back to 0 and sends no video preference (REQ-017). Unlike a pick
+(REQ-018), `buffered_ranges` is not emptied: the picked rung's ranges are still reported.
+`bandwidth_estimate` and `player_time_ms` continue. The server sends the auto rung from the
+end of the buffered range (SABR-057). The pick that preceded it listed both 360p formats
+(396, 243) in field 17 and emptied the ranges of both tracks.
+
+Status: verified: capture 2026-10-17

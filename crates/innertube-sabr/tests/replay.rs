@@ -23,6 +23,7 @@ const ALL: &[(&str, &str)] = &[
 
 /// Differences on VOD sessions.
 const VOD: &[(&str, &str)] = &[
+    ("17", "auto video preference: these captures list the ladder; the October 2026 client sends none (REQ-017)"),
     ("3.1.2", "buffered-range lmt: the engine keeps one per itag; with multi-track audio the reference acks the track served"),
     ("3.1.3", "buffered-range xtags: the engine keeps one per itag; with multi-track audio the reference acks the track served"),
 ];
@@ -68,6 +69,22 @@ fn a_vod_open_with_a_seek_matches_the_reference() {
 #[test]
 fn a_content_ads_hold_echoes_the_context_and_resumes() {
     replays_in_full("vod-content-ads-hold.replay");
+}
+
+/// VOD auto sends no `preferred_video_format_ids` (17), so the server picks the rung; a
+/// pick sends the picked itag; clearing it goes back to none (REQ-017, REQ-018).
+#[test]
+fn vod_auto_leaves_the_video_preference_to_the_server() {
+    let session = Session::load("vod-open-seek.replay");
+    let mut engine = engine_after(&session, 1);
+    let preferred = |e: &mut innertube_sabr::SabrEngine| {
+        support::replay::decode(&e.request_bytes(5_000)).unwrap().iter().filter(|(f, _)| *f == 17).count()
+    };
+    assert_eq!(preferred(&mut engine), 0);
+    engine.set_video_quality(397, 480);
+    assert_eq!(preferred(&mut engine), 1);
+    engine.unpin_video_quality();
+    assert_eq!(preferred(&mut engine), 0);
 }
 
 /// An fMP4 init starts with an `ftyp` box, a WebM init with the EBML magic.

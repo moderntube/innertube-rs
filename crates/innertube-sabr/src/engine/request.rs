@@ -26,14 +26,15 @@ impl SabrEngine {
             // `sabr.no_audio_selected` (SABR-038).
             xtags: f.xtags.clone(),
         };
-        // A manual pick collapses the ladder to its itag (REQ-018). Auto keeps the full
-        // ladder so the server drives the rung (REQ-017).
+        // A manual pick collapses the ladder to its itag (REQ-018). VOD auto sends no video
+        // preference and the server picks the rung; a listed ladder keeps the current one (REQ-017).
         let preferred_video_format_ids = match &self.manual_pick {
             Some(p) => vec![FormatId {
                 itag: Some(p.itag),
                 last_modified: if is_live { None } else { self.lmt.get(&p.itag).copied() },
                 xtags: self.xtags.get(&p.itag).cloned(),
             }],
+            None if !is_live => Vec::new(),
             None => self.selected.iter().filter(|f| f.is_video).map(preferred).collect(),
         };
         let preferred_audio_format_ids =
