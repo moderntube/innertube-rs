@@ -33,6 +33,21 @@ fn seek_target_ms(s: &SabrSeek) -> Option<i64> {
     }
 }
 
+/// The raw bytes of length-delimited `field` in `msg`, unknown sub-fields included. The
+/// playback cookie is echoed byte for byte (REQ-023).
+fn length_delimited_field(mut msg: &[u8], field: u32) -> Option<Bytes> {
+    use prost::encoding::{decode_key, decode_varint, skip_field, DecodeContext, WireType};
+    while !msg.is_empty() {
+        let (tag, wire) = decode_key(&mut msg).ok()?;
+        if tag == field && wire == WireType::LengthDelimited {
+            let len = usize::try_from(decode_varint(&mut msg).ok()?).ok()?;
+            return msg.get(..len).map(Bytes::copy_from_slice);
+        }
+        skip_field(wire, tag, &mut msg, DecodeContext::default()).ok()?;
+    }
+    None
+}
+
 impl SabrEngine {
     /// Begins a new response for [`SabrEngine::ingest_streaming`]. Clears the per-response
     /// correlation state and the adopted `SABR_SEEK` target, which `ingest` would clear on
@@ -259,8 +274,8 @@ impl SabrEngine {
                     // NEXT_REQUEST_POLICY: pacing/buffering hints + the playback
                     // cookie we must echo back to keep our session alive.
                     if let Ok(p) = NextRequestPolicy::decode(&part.payload[..]) {
-                        if let Some(cookie) = &p.playback_cookie {
-                            self.playback_cookie = Some(cookie.encode_to_vec().into());
+                        if p.playback_cookie.is_some() {
+                            self.playback_cookie = length_delimited_field(&part.payload, 7);
                         }
                         self.next_policy = Some(p);
                     }

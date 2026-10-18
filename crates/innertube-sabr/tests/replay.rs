@@ -19,7 +19,6 @@ const ALL: &[(&str, &str)] = &[
     ("1.68", "network interruption duration: the reference reports one, the engine sends 0"),
     ("1.80", "field 80: the engine sends it on every request, the reference on the first only"),
     ("1.85", "field 85: the engine sends it; these captures predate it"),
-    ("19.3", "playback cookie: the engine re-encodes it from a 4-field schema and drops the rest"),
 ];
 
 /// Differences on VOD sessions.
