@@ -198,6 +198,16 @@ impl Store {
         out
     }
 
+    /// Drop the stored video of every rung but `keep`. The web player clears its buffer on
+    /// a quality pick, so later `buffered_ranges` carry only the picked rung.
+    fn retain_video_rung(&mut self, video_itags: &[i32], keep: i32) {
+        for itag in video_itags.iter().filter(|&&i| i != keep) {
+            if let Some(map) = self.segs.remove(itag) {
+                self.bytes -= map.values().map(|s| s.bytes.len()).sum::<usize>();
+            }
+        }
+    }
+
     /// Drop the segments farthest from the playhead until under `cap`, keeping
     /// `[playhead - 10 s, playhead + keep_ahead]`.
     fn evict(&mut self, playhead: i64, keep_ahead: i64, cap: usize) {
@@ -587,7 +597,10 @@ async fn fetch_loop(
         if pin != applied_pin {
             match pin {
                 0 => engine.unpin_video_quality(),
-                itag => engine.set_video_quality(itag, shared.heights.get(&itag).copied().unwrap_or(0)),
+                itag => {
+                    engine.set_video_quality(itag, shared.heights.get(&itag).copied().unwrap_or(0));
+                    shared.store.lock().unwrap().retain_video_rung(&shared.video_itags, itag);
+                }
             }
             applied_pin = pin;
         }
@@ -732,6 +745,20 @@ mod tests {
             .map(|r| (r.start_segment_index, r.end_segment_index, r.start_time_ms, r.duration_ms))
             .collect();
         assert_eq!(r, vec![(1, 3, 0, 15_000), (7, 8, 30_000, 10_000)]);
+    }
+
+    #[test]
+    fn a_pick_drops_the_other_video_rungs_and_keeps_audio() {
+        let mut s = Store::default();
+        for seq in 1..=4 {
+            s.insert(seg(398, seq, (seq - 1) * 5_000, 5_000));
+            s.insert(seg(397, seq, (seq - 1) * 5_000, 5_000));
+        }
+        s.insert(seg(140, 1, 0, 20_000));
+        s.retain_video_rung(&[398, 397], 397);
+        let itags: Vec<_> = s.ranges(&[398, 397, 140]).into_iter().map(|r| r.itag).collect();
+        assert_eq!(itags, vec![397, 140]);
+        assert_eq!(s.bytes, 5);
     }
 
 }
