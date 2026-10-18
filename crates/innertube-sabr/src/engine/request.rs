@@ -17,8 +17,7 @@ impl SabrEngine {
         self.last_request_pt.set(Some(player_time_ms).filter(|&p| p != LIVE_EDGE_SEEK_MS));
         // Format ids differ by stream type. Live ids are itag-only (REQ-005): a live `lmt`
         // rotates, and a stale one earns RELOAD_PLAYER_RESPONSE. VOD ids carry the real
-        // `lmt`; without it the server answers with policy and no media (SABR-039). The
-        // engine does not send `selected_format_ids` (2).
+        // `lmt`; without it the server answers with policy and no media (SABR-039).
         let is_live = self.is_live;
         let preferred = |f: &SelectedFormat| FormatId {
             itag: Some(f.itag),
@@ -138,6 +137,7 @@ impl SabrEngine {
                 }),
                 ..Default::default()
             }),
+            selected_format_ids: if is_live { Vec::new() } else { self.initialized.clone() },
             preferred_video_format_ids,
             preferred_audio_format_ids,
             buffered_ranges,

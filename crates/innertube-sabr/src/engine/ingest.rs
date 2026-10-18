@@ -270,6 +270,14 @@ impl SabrEngine {
                         }
                     }
                 }
+                42 => {
+                    // FORMAT_INITIALIZATION_METADATA: the format is initialized from here on (REQ-007).
+                    if let Some(id) = FormatInitializationMetadata::decode(&part.payload[..]).ok().and_then(|m| m.format_id) {
+                        if !self.initialized.contains(&id) {
+                            self.initialized.push(id);
+                        }
+                    }
+                }
                 35 => {
                     // NEXT_REQUEST_POLICY: pacing/buffering hints + the playback
                     // cookie we must echo back to keep our session alive.

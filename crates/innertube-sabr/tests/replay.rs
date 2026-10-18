@@ -23,7 +23,6 @@ const ALL: &[(&str, &str)] = &[
 
 /// Differences on VOD sessions.
 const VOD: &[(&str, &str)] = &[
-    ("2", "selected_format_ids: the reference sends them after the first request, the engine never does"),
     ("3.1.2", "buffered-range lmt: the engine keeps one per itag; with multi-track audio the reference acks the track served"),
     ("3.1.3", "buffered-range xtags: the engine keeps one per itag; with multi-track audio the reference acks the track served"),
 ];

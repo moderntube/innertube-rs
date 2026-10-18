@@ -13,7 +13,7 @@ use crate::proto::misc::{AuthorizedFormat, FormatId, PlaybackAuthorization};
 use crate::proto::video_streaming::sabr_context_update::SabrContextWritePolicy;
 use crate::proto::video_streaming::streamer_context::{ClientInfo, SabrContext};
 use crate::proto::video_streaming::{
-    BufferedRange, ClientAbrState, CuepointList, LiveMetadata, MediaCapabilityCaps,
+    BufferedRange, ClientAbrState, CuepointList, FormatInitializationMetadata, LiveMetadata, MediaCapabilityCaps,
     MediaHeader, NextRequestPolicy, PlaybackStartPolicy, ReloadPlaybackContext,
     SabrContextSendingPolicy, SabrContextUpdate, SabrError, SabrSeek, SsapPlaybackInfo,
     StreamProtectionStatus, StreamerContext, VideoPlaybackAbrRequest,
@@ -276,6 +276,9 @@ pub struct SabrEngine {
     /// Opaque playback cookie from the latest `NEXT_REQUEST_POLICY`, echoed in
     /// `StreamerContext.playback_cookie` (REQ-023).
     playback_cookie: Option<Bytes>,
+    /// Formats whose `FORMAT_INITIALIZATION_METADATA` arrived, in arrival order: request
+    /// field 2 (REQ-007).
+    initialized: Vec<FormatId>,
     /// Set by [`SabrEngine::set_ad_report`]: report ad cues in request field 24, with this
     /// `unknown_field_5`. `None` sends no field 24.
     ad_report: Option<Option<i32>>,
@@ -405,6 +408,7 @@ impl SabrEngine {
             max_seekable_ms: None,
             min_seekable_ms: None,
             playback_cookie: None,
+            initialized: Vec::new(),
             ad_report: None,
             ad_cue: None,
             last_request_pt: std::cell::Cell::new(None),
