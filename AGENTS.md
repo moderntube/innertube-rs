@@ -20,7 +20,8 @@ edge, capping quality, retrying until it works) does not count as a fix.
 
 - **The protocol register** in `docs/protocol/`: each fact has an id (`SABR-011`), a
   status and its evidence. Code comments cite facts by id. Add a fact there before you
-  depend on it.
+  depend on it. When a capture or a newer player build contradicts a fact, update its text
+  and status in the same change.
 - **Captures of the reference client.** mitmproxy captures hold session tokens and
   account data, so they are not published. Keep your own under `dumps/` (gitignored).
   Published, scrubbed fixtures live in `notes/fixtures/` and
