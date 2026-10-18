@@ -303,6 +303,18 @@ throttle lifted, the estimate and the served rung both rose in the same round.
 
 Status: verified: capture 2026-07-16
 
+### SABR-057 After Auto the server serves its own auto rung, which can sit below the open rung
+
+The playback cookie's `resolution` (field 1) is the server's auto cap: 999999 while a pick is
+active, the auto height otherwise. On `pNPPVCPuWG8` over the same egress, the web client got
+cap 480 from its first response and after Auto (viewport 1801x1013, estimate up to 2.2 MB/s,
+`sticky_resolution = 0`), so it played 397 throughout. Our sessions omit field 21 at open
+(REQ-021) and got cap 720 (398); after a pick and Auto they got cap 480 (397), as the web
+client does. With field 2, a measured estimate and a byte-exact cookie our requests after
+Auto match the reference in every field but the telemetry counters.
+
+Status: verified: capture 2026-10-17, drive runs 2026-10-17
+
 ### SABR-033 The first rung of an auto VOD open follows the first advertised estimate
 
 First requests that advertised about 100 KB/s (95,027 and 104,857 B/s) were served 360p and

@@ -13,7 +13,7 @@ use std::time::{Duration, Instant};
 use crate::client::{Navigation, Session};
 use innertube_js::NSigSolver;
 use innertube_pot::PoTokenProvider;
-use innertube_sabr::{MediaSegment, SabrClientInfo, SabrEngine, SelectedFormat, VodBufferedRange};
+use innertube_sabr::{BandwidthEstimator, MediaSegment, SabrClientInfo, SabrEngine, SelectedFormat, VodBufferedRange};
 
 use crate::attest::ReattestOutcome;
 use crate::vod_bootstrap::{
@@ -576,6 +576,15 @@ fn buffered_to_end(duration_ms: i64, covered_until_ms: i64) -> bool {
     duration_ms > 0 && covered_until_ms >= duration_ms - END_SLACK_MS
 }
 
+/// The estimate to advertise after a round of `bytes` over `secs` that carried `segs` media
+/// segments. Rounds without media are server holds (GATE-005) and are not throughput.
+fn advertise(bwe: &mut BandwidthEstimator, bytes: usize, segs: usize, secs: f64) -> i64 {
+    if segs == 0 {
+        return bwe.estimate();
+    }
+    bwe.observe(bytes, secs)
+}
+
 /// Consecutive failed SABR POSTs after which the session gives up.
 const MAX_FAILED_POSTS: u32 = 8;
 
@@ -589,10 +598,11 @@ async fn fetch_loop(
     cap: usize,
 ) {
     let mut applied_pin = 0;
+    let mut bwe = BandwidthEstimator::new(crate::bandwidth::load());
     let mut hold_until: Option<Instant> = None;
     let mut round = 0u64;
     let mut failed_posts = 0u32;
-    while !shared.stop.load(Ordering::Relaxed) {
+    'fetch: while !shared.stop.load(Ordering::Relaxed) {
         let pin = shared.pin.load(Ordering::Relaxed);
         if pin != applied_pin {
             match pin {
@@ -650,7 +660,7 @@ async fn fetch_loop(
                         Some(Arc::new(StreamError::RequestsFailed { attempts: failed_posts, last: e }));
                     shared.stop.store(true, Ordering::Relaxed);
                     shared.arrived.notify_all();
-                    return;
+                    break 'fetch;
                 }
                 tokio::time::sleep(Duration::from_millis(NO_MEDIA_FLOOR_MS)).await;
                 continue;
@@ -662,7 +672,7 @@ async fn fetch_loop(
         let (mut status, mut reload_token, mut redirect, mut seek) = (None, None, None, None);
         loop {
             if shared.stop.load(Ordering::Relaxed) {
-                return;
+                break 'fetch;
             }
             match body.next_chunk().await {
                 Ok(Some(chunk)) => {
@@ -694,9 +704,12 @@ async fn fetch_loop(
                 }
             }
         }
+        let secs = t0.elapsed().as_secs_f64();
+        let bps = advertise(&mut bwe, bytes, segs, secs);
+        engine.set_bandwidth_estimate(bps);
         tracing::debug!(
-            "[segvod] round {round}: pt={playhead} ahead v={ahead_v} a={ahead_a} gate={gate} POST {:.0}ms {bytes}B segs={segs} prot={status:?} seek={seek:?}",
-            t0.elapsed().as_secs_f64() * 1000.0
+            "[segvod] round {round}: pt={playhead} ahead v={ahead_v} a={ahead_a} gate={gate} POST {:.0}ms {bytes}B segs={segs} bwe={bps} prot={status:?} seek={seek:?}",
+            secs * 1000.0
         );
         round += 1;
         if let Some(r) = redirect {
@@ -723,6 +736,11 @@ async fn fetch_loop(
             hold_until = Some(Instant::now() + Duration::from_millis(ms));
         }
     }
+    // The next session's cold-start seed, as the web player stores `yt-player-bandwidth`
+    // (PLAYER-009).
+    if let Some(bps) = bwe.persistable() {
+        innertube_sabr::bandwidth_persist::save(bps);
+    }
 }
 
 #[cfg(test)]
@@ -745,6 +763,13 @@ mod tests {
             .map(|r| (r.start_segment_index, r.end_segment_index, r.start_time_ms, r.duration_ms))
             .collect();
         assert_eq!(r, vec![(1, 3, 0, 15_000), (7, 8, 30_000, 10_000)]);
+    }
+
+    #[test]
+    fn rounds_with_media_move_the_advertised_estimate_and_held_rounds_do_not() {
+        let mut bwe = BandwidthEstimator::new(460_195);
+        assert_eq!(advertise(&mut bwe, 105, 0, 4.0), 460_195);
+        assert_eq!(advertise(&mut bwe, 2_000_000, 3, 1.0), 2_000_000);
     }
 
     #[test]
