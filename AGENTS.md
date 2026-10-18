@@ -98,6 +98,8 @@ where an unexplained difference hides.
 - Fixtures are scrubbed: no PO tokens, signatures, cookies, IP addresses or
   `visitorData`.
 - Conventional commits, one kind of change per commit.
+- Commit messages, code, comments and fixtures carry no personal or private information:
+  no names, email addresses, usernames, hostnames, local paths or account details.
 - Vendored code keeps its license: `crates/innertube-sabr/proto/` (googlevideo, MIT) and
   `crates/innertube-js/vendor/` (yt-dlp ejs, Unlicense). bgutil is GPL-3.0: talk to it
   over HTTP only.
