@@ -575,6 +575,18 @@ fn parse_search_reads_the_filter_dialog_of_a_filtered_response() {
 }
 
 #[test]
+fn parse_search_reads_the_chips_of_a_chip_reload() {
+    let v: serde_json::Value =
+        serde_json::from_str(include_str!("../../../tests/fixtures/search_chips_videos_selected.json")).unwrap();
+    let r = parse_search(&v);
+    let labels: Vec<&str> = r.chips.iter().map(|c| c.label.as_str()).collect();
+    assert_eq!(labels, vec!["All", "Shorts", "Unwatched", "Videos", "Recently uploaded", "Live"]);
+    assert!(r.chips[3].selected && !r.chips[0].selected, "Videos is the selected chip");
+    assert_eq!(r.chips[0].token.as_deref(), Some("TOKEN_ALL"), "All returns to the unfiltered page");
+    assert_eq!(r.continuation.as_deref(), Some("SCROLL_TOKEN"), "chip tokens are separate from the scroll continuation");
+}
+
+#[test]
 fn parse_channel_videos_extracts_sort_chips_and_keeps_scroll_continuation() {
     let v: serde_json::Value =
         serde_json::from_str(include_str!("../../../tests/fixtures/channel_videos_chips.json")).unwrap();

@@ -278,3 +278,18 @@ and Playlists under This week).
 
 Status: verified: capture 2026-05-30, live `search` with `params` `EgIQAQ%3D%3D` and
 `EgIIAw%3D%3D` 2026-10-18
+
+### IT-030 A search chip is a continuation that reloads the whole page
+
+A first `search` page carries `header.searchHeaderRenderer.chipBar.chipCloudRenderer.chips[]`
+(All, Shorts, Unwatched, Videos, Recently uploaded, Live; Watched when signed in). Each
+`chipCloudChipRenderer` has `text`, `isSelected` and, unless selected on a first page,
+`navigationEndpoint.continuationCommand` with `request: CONTINUATION_REQUEST_TYPE_SEARCH`.
+Choosing a chip is `search` with `{continuation: token}`. The reply is
+`onResponseReceivedCommands[]` of two `reloadContinuationItemsCommand`s targeting
+`search-page`: slot `RELOAD_CONTINUATION_SLOT_BODY` holds a new `twoColumnSearchResultsRenderer`
+with its own scroll continuation, and slot `RELOAD_CONTINUATION_SLOT_HEADER` a new
+`searchHeaderRenderer` whose chips all carry tokens (All returns to the unfiltered page) and
+whose filter dialog is intact.
+
+Status: verified: live `search` and its Videos chip continuation 2026-10-18
