@@ -1,0 +1,134 @@
+{
+  "onResponseReceivedCommands": [
+    {
+      "reloadContinuationItemsCommand": {
+        "targetId": "search-page",
+        "slot": "RELOAD_CONTINUATION_SLOT_BODY",
+        "continuationItems": [
+          {
+            "twoColumnSearchResultsRenderer": {
+              "primaryContents": {
+                "sectionListRenderer": {
+                  "contents": [
+                    {
+                      "continuationItemRenderer": {
+                        "continuationEndpoint": {
+                          "continuationCommand": {
+                            "token": "SCROLL_TOKEN",
+                            "request": "CONTINUATION_REQUEST_TYPE_SEARCH"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "reloadContinuationItemsCommand": {
+        "targetId": "search-page",
+        "slot": "RELOAD_CONTINUATION_SLOT_HEADER",
+        "continuationItems": [
+          {
+            "searchHeaderRenderer": {
+              "chipBar": {
+                "chipCloudRenderer": {
+                  "chips": [
+                    {
+                      "chipCloudChipRenderer": {
+                        "text": {
+                          "simpleText": "All"
+                        },
+                        "isSelected": false,
+                        "navigationEndpoint": {
+                          "continuationCommand": {
+                            "token": "TOKEN_ALL",
+                            "request": "CONTINUATION_REQUEST_TYPE_SEARCH"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "chipCloudChipRenderer": {
+                        "text": {
+                          "simpleText": "Shorts"
+                        },
+                        "isSelected": false,
+                        "navigationEndpoint": {
+                          "continuationCommand": {
+                            "token": "TOKEN_SHORTS",
+                            "request": "CONTINUATION_REQUEST_TYPE_SEARCH"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "chipCloudChipRenderer": {
+                        "text": {
+                          "simpleText": "Unwatched"
+                        },
+                        "isSelected": false,
+                        "navigationEndpoint": {
+                          "continuationCommand": {
+                            "token": "TOKEN_UNWATCHED",
+                            "request": "CONTINUATION_REQUEST_TYPE_SEARCH"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "chipCloudChipRenderer": {
+                        "text": {
+                          "simpleText": "Videos"
+                        },
+                        "isSelected": true,
+                        "navigationEndpoint": {
+                          "continuationCommand": {
+                            "token": "TOKEN_VIDEOS",
+                            "request": "CONTINUATION_REQUEST_TYPE_SEARCH"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "chipCloudChipRenderer": {
+                        "text": {
+                          "simpleText": "Recently uploaded"
+                        },
+                        "isSelected": false,
+                        "navigationEndpoint": {
+                          "continuationCommand": {
+                            "token": "TOKEN_RECENTLY_UPLOADED",
+                            "request": "CONTINUATION_REQUEST_TYPE_SEARCH"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "chipCloudChipRenderer": {
+                        "text": {
+                          "simpleText": "Live"
+                        },
+                        "isSelected": false,
+                        "navigationEndpoint": {
+                          "continuationCommand": {
+                            "token": "TOKEN_LIVE",
+                            "request": "CONTINUATION_REQUEST_TYPE_SEARCH"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

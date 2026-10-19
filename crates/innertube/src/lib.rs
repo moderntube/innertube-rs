@@ -67,8 +67,8 @@ pub use client::{
     // Typed read models
     AccountInfo, Caption, CaptionTrack, Channel, ChannelSort, ChannelTab, ChatBadge, ChatKind, ChatMessage, ChatReplay, ChatRun,
     ChatSendResult, Comment, Comments, LiveChat,
-    Notification, Playlist, PlaylistContents, ResolvedUrl, SearchFilter, SearchFilterGroup, SearchItem, SearchResults,
-    VideoDetails,
+    Notification, Playlist, PlaylistContents, ResolvedUrl, SearchChip, SearchFilter, SearchFilterGroup, SearchItem,
+    SearchResults, VideoDetails,
     // Shorts
     ReelEntry, ReelOverlay, ReelSequence, ReelStart,
     // Sidebar from the watch page, the only response carrying the `an_webp` hover previews.

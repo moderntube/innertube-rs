@@ -89,14 +89,22 @@ pub struct SearchFilterGroup {
     pub filters: Vec<SearchFilter>,
 }
 
-/// A page of results and the next-page token. `sort_chips` holds a channel tab's sort
-/// options; `filters` holds the search filter dialog of a first search page.
+/// A search results chip; `token` is a `search` continuation that reloads the page (IT-030).
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct SearchChip {
+    pub label: String,
+    pub token: Option<String>,
+    pub selected: bool,
+}
+
+/// A page of results and the next-page token, with a channel tab's or a search page's header.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct SearchResults {
     pub items: Vec<SearchItem>,
     pub continuation: Option<String>,
     pub sort_chips: Vec<SortChip>,
     pub filters: Vec<SearchFilterGroup>,
+    pub chips: Vec<SearchChip>,
 }
 
 fn filter_groups(dialog: &Value) -> Vec<SearchFilterGroup> {
@@ -409,6 +417,16 @@ pub(crate) fn parse_search(v: &Value) -> SearchResults {
     walk_pruned(v, &mut |node| {
         if let Some(dialog) = node.get("searchFilterOptionsDialogRenderer") {
             out.filters = filter_groups(dialog);
+            return false;
+        }
+        if let Some(chip) = node.get("chipCloudChipRenderer") {
+            if let Some(label) = text(&chip["text"]) {
+                out.chips.push(SearchChip {
+                    label,
+                    token: chip["navigationEndpoint"]["continuationCommand"]["token"].as_str().map(str::to_string),
+                    selected: chip["isSelected"].as_bool().unwrap_or(false),
+                });
+            }
             return false;
         }
         if let Some(shelf) = node.get("richShelfRenderer") {
