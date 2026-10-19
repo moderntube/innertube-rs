@@ -68,13 +68,65 @@ pub struct SortChip {
     pub selected: bool,
 }
 
-/// A page of search results plus the token for the next page (if any). On channel
-/// tabs, `sort_chips` carries the Latest/Popular/Oldest options (empty elsewhere).
+/// A search filter option; clicking runs `search` with `params` and toggles it (IT-029).
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct SearchFilter {
+    pub label: String,
+    pub clickable: bool,
+    /// `None` on a clickable option is a search with no filter.
+    pub params: Option<String>,
+    pub selected: bool,
+    /// The option does not combine with the filters in force.
+    pub disabled: bool,
+    /// e.g. "Search for This week", or "Remove This week filter" on a selected option.
+    pub tooltip: Option<String>,
+}
+
+/// A titled group of the search filter dialog (Type, Duration, Upload date, ...).
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct SearchFilterGroup {
+    pub title: String,
+    pub filters: Vec<SearchFilter>,
+}
+
+/// A page of results and the next-page token. `sort_chips` holds a channel tab's sort
+/// options; `filters` holds the search filter dialog of a first search page.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct SearchResults {
     pub items: Vec<SearchItem>,
     pub continuation: Option<String>,
     pub sort_chips: Vec<SortChip>,
+    pub filters: Vec<SearchFilterGroup>,
+}
+
+fn filter_groups(dialog: &Value) -> Vec<SearchFilterGroup> {
+    let groups = dialog["groups"].as_array().map(Vec::as_slice).unwrap_or_default();
+    groups
+        .iter()
+        .map(|g| &g["searchFilterGroupRenderer"])
+        .map(|g| SearchFilterGroup {
+            title: text(&g["title"]).unwrap_or_default(),
+            filters: g["filters"]
+                .as_array()
+                .map(Vec::as_slice)
+                .unwrap_or_default()
+                .iter()
+                .map(|f| &f["searchFilterRenderer"])
+                .filter_map(|f| {
+                    let endpoint = &f["navigationEndpoint"]["searchEndpoint"];
+                    Some(SearchFilter {
+                        label: text(&f["label"])?,
+                        clickable: endpoint.is_object(),
+                        params: endpoint["params"].as_str().map(str::to_string),
+                        selected: f["status"].as_str() == Some("FILTER_STATUS_SELECTED"),
+                        disabled: f["status"].as_str() == Some("FILTER_STATUS_DISABLED"),
+                        tooltip: f["tooltip"].as_str().map(str::to_string),
+                    })
+                })
+                .collect(),
+        })
+        .filter(|g| !g.filters.is_empty())
+        .collect()
 }
 
 /// The `UC…` channel id behind a byline's run navigation endpoint (so a search result
@@ -355,6 +407,10 @@ pub fn find_not_interested_token(feed: &Value) -> Option<String> {
 pub(crate) fn parse_search(v: &Value) -> SearchResults {
     let mut out = SearchResults::default();
     walk_pruned(v, &mut |node| {
+        if let Some(dialog) = node.get("searchFilterOptionsDialogRenderer") {
+            out.filters = filter_groups(dialog);
+            return false;
+        }
         if let Some(shelf) = node.get("richShelfRenderer") {
             let mut items = Vec::new();
             walk(&shelf["contents"], &mut |n| {

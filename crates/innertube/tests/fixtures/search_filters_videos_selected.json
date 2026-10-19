@@ -1,0 +1,434 @@
+{
+  "header": {
+    "searchHeaderRenderer": {
+      "searchFilterButton": {
+        "buttonRenderer": {
+          "style": "STYLE_TEXT",
+          "size": "SIZE_DEFAULT",
+          "isDisabled": false,
+          "text": {
+            "runs": [
+              {
+                "text": "Filters"
+              }
+            ]
+          },
+          "icon": {
+            "iconType": "TUNE"
+          },
+          "tooltip": "Search filters",
+          "command": {
+            "openPopupAction": {
+              "popup": {
+                "searchFilterOptionsDialogRenderer": {
+                  "title": {
+                    "runs": [
+                      {
+                        "text": "Search filters"
+                      }
+                    ]
+                  },
+                  "groups": [
+                    {
+                      "searchFilterGroupRenderer": {
+                        "title": {
+                          "simpleText": "Type"
+                        },
+                        "filters": [
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "Videos"
+                              },
+                              "status": "FILTER_STATUS_SELECTED",
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgA%3D"
+                                }
+                              },
+                              "tooltip": "Remove Videos filter"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "Shorts"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgIQCQ%3D%3D"
+                                }
+                              },
+                              "tooltip": "Search for Shorts"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "Channels"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgIQAg%3D%3D"
+                                }
+                              },
+                              "tooltip": "Search for Channels"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "Playlists"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgIQAw%3D%3D"
+                                }
+                              },
+                              "tooltip": "Search for Playlists"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "Movies"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgIQBA%3D%3D"
+                                }
+                              },
+                              "tooltip": "Search for Movies"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "searchFilterGroupRenderer": {
+                        "title": {
+                          "simpleText": "Duration"
+                        },
+                        "filters": [
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "Under 3 minutes"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgQQARgE"
+                                }
+                              },
+                              "tooltip": "Search for Under 3 minutes"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "3 - 20 minutes"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgQQARgF"
+                                }
+                              },
+                              "tooltip": "Search for 3 - 20 minutes"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "Over 20 minutes"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgQQARgC"
+                                }
+                              },
+                              "tooltip": "Search for Over 20 minutes"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "searchFilterGroupRenderer": {
+                        "title": {
+                          "simpleText": "Upload date"
+                        },
+                        "filters": [
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "Today"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgQIAhAB"
+                                }
+                              },
+                              "tooltip": "Search for Today"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "This week"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgQIAxAB"
+                                }
+                              },
+                              "tooltip": "Search for This week"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "This month"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgQIBBAB"
+                                }
+                              },
+                              "tooltip": "Search for This month"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "This year"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgQIBRAB"
+                                }
+                              },
+                              "tooltip": "Search for This year"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "searchFilterGroupRenderer": {
+                        "title": {
+                          "simpleText": "Features"
+                        },
+                        "filters": [
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "Live"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgQQAUAB"
+                                }
+                              },
+                              "tooltip": "Search for Live"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "4K"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgQQAXAB"
+                                }
+                              },
+                              "tooltip": "Search for 4K"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "HD"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgQQASAB"
+                                }
+                              },
+                              "tooltip": "Search for HD"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "Subtitles/CC"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgQQASgB"
+                                }
+                              },
+                              "tooltip": "Search for Subtitles/CC"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "Creative Commons"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgQQATAB"
+                                }
+                              },
+                              "tooltip": "Search for Creative Commons"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "360°"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgQQAXgB"
+                                }
+                              },
+                              "tooltip": "Search for 360°"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "VR180"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgUQAdABAQ%3D%3D"
+                                }
+                              },
+                              "tooltip": "Search for VR180"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "3D"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgQQATgB"
+                                }
+                              },
+                              "tooltip": "Search for 3D"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "HDR"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgUQAcgBAQ%3D%3D"
+                                }
+                              },
+                              "tooltip": "Search for HDR"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "Location"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgUQAbgBAQ%3D%3D"
+                                }
+                              },
+                              "tooltip": "Search for Location"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "Purchased"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "EgQQAUgB"
+                                }
+                              },
+                              "tooltip": "Search for Purchased"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "searchFilterGroupRenderer": {
+                        "title": {
+                          "simpleText": "Prioritize"
+                        },
+                        "filters": [
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "Relevance"
+                              },
+                              "status": "FILTER_STATUS_SELECTED",
+                              "tooltip": "Prioritize by relevance"
+                            }
+                          },
+                          {
+                            "searchFilterRenderer": {
+                              "label": {
+                                "simpleText": "Popularity"
+                              },
+                              "navigationEndpoint": {
+                                "searchEndpoint": {
+                                  "query": "rust programming",
+                                  "params": "CAMSAhAB"
+                                }
+                              },
+                              "tooltip": "Prioritize by popularity"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              "popupType": "DIALOG"
+            }
+          },
+          "iconPosition": "BUTTON_ICON_POSITION_TYPE_RIGHT_OF_TEXT"
+        }
+      }
+    }
+  }
+}

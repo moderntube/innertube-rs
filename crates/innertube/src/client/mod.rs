@@ -22,7 +22,7 @@ pub use api::{
     AccountInfo, Caption,
     CaptionTrack, Channel, ChatBadge, ChatKind, ChatMessage, ChatReplay, ChatRun, ChatSendResult, Comment, Comments, LiveChat,
     Notification, Playlist,
-    PlaylistContents, ResolvedUrl, SearchItem, SearchResults, VideoDetails,
+    PlaylistContents, ResolvedUrl, SearchFilter, SearchFilterGroup, SearchItem, SearchResults, VideoDetails,
 };
 pub(crate) use api::parse_next;
 pub use auth::{AuthError, Credentials};
