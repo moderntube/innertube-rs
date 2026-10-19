@@ -571,7 +571,20 @@ fn parse_search_reads_the_filter_dialog_of_a_filtered_response() {
     let today = &r.filters[2].filters[0];
     assert_eq!(today.params.as_deref(), Some("EgQIAhAB"), "Today combined with Videos");
     let relevance = &r.filters[4].filters[0];
-    assert!(relevance.selected && relevance.params.is_none(), "the selected default has no endpoint");
+    assert!(relevance.selected && !relevance.clickable, "the selected default has no endpoint");
+}
+
+#[test]
+fn parse_search_keeps_a_selected_upload_date_clickable_to_remove_it() {
+    let v: serde_json::Value =
+        serde_json::from_str(include_str!("../../../tests/fixtures/search_filters_week_selected.json")).unwrap();
+    let r = parse_search(&v);
+    let week = &r.filters[2].filters[1];
+    assert_eq!((week.label.as_str(), week.selected, week.clickable), ("This week", true, true));
+    assert_eq!(week.params, None, "removing it is a search with no filter");
+    assert_eq!(week.tooltip.as_deref(), Some("Remove This week filter"));
+    let channels = &r.filters[0].filters[2];
+    assert!(channels.disabled && !channels.clickable, "Channels does not combine with This week");
 }
 
 #[test]
