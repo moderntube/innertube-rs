@@ -267,14 +267,18 @@ Status: unverified
 
 A first `search` page carries `header.searchHeaderRenderer.searchFilterButton`, whose
 `openPopupAction` holds `searchFilterOptionsDialogRenderer.groups[]` (Type, Duration, Upload
-date, Features, Prioritize). Each `searchFilterRenderer` has a `label` and either a
-`navigationEndpoint.searchEndpoint.params` or a `status`. The client sends that `params`
-verbatim (still percent-encoded) as the next `search` call's `params`. In a filtered
-response, every option's `params` already combines the filters in force. A selected option
-is `FILTER_STATUS_SELECTED`: a selected type carries `params` that clear it (Videos:
-`EgA%3D`); a selected upload date and the default Relevance carry none. Options that do not
-combine with the filters in force are `FILTER_STATUS_DISABLED` with no endpoint (Channels
-and Playlists under This week).
+date, Features, Prioritize). Each `searchFilterRenderer` has a `label`, a `tooltip`, an
+optional `status` and an optional `navigationEndpoint.searchEndpoint`. Clicking an option
+runs `search` with that endpoint's `params`, sent verbatim (still percent-encoded); an
+endpoint without `params` is a search with no filter. In a filtered response, every
+option's `params` already combines the filters in force.
+
+A selected option is `FILTER_STATUS_SELECTED`, and clicking it again removes it: its tooltip
+reads "Remove This week filter". A selected type carries `params` that clear it (Videos:
+`EgA%3D`); a selected upload date carries a `searchEndpoint` of `{query}` only, and the web
+client then loads `/results?search_query=<q>` with no `sp`. The default Relevance has no
+endpoint at all. Options that do not combine with the filters in force are
+`FILTER_STATUS_DISABLED` with no endpoint (Channels and Playlists under This week).
 
 Status: verified: capture 2026-05-30, live `search` with `params` `EgIQAQ%3D%3D` and
-`EgIIAw%3D%3D` 2026-10-18
+`EgIIAw%3D%3D` 2026-10-18, web client deselecting This week 2026-10-18

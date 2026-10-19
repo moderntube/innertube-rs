@@ -68,15 +68,18 @@ pub struct SortChip {
     pub selected: bool,
 }
 
-/// A search filter dialog option. `params` is the `search` blob it sends, combined with the
-/// filters in force; on a selected option it clears that option (IT-029).
+/// A search filter option; clicking runs `search` with `params` and toggles it (IT-029).
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct SearchFilter {
     pub label: String,
+    pub clickable: bool,
+    /// `None` on a clickable option is a search with no filter.
     pub params: Option<String>,
     pub selected: bool,
     /// The option does not combine with the filters in force.
     pub disabled: bool,
+    /// e.g. "Search for This week", or "Remove This week filter" on a selected option.
+    pub tooltip: Option<String>,
 }
 
 /// A titled group of the search filter dialog (Type, Duration, Upload date, ...).
@@ -110,11 +113,14 @@ fn filter_groups(dialog: &Value) -> Vec<SearchFilterGroup> {
                 .iter()
                 .map(|f| &f["searchFilterRenderer"])
                 .filter_map(|f| {
+                    let endpoint = &f["navigationEndpoint"]["searchEndpoint"];
                     Some(SearchFilter {
                         label: text(&f["label"])?,
-                        params: f["navigationEndpoint"]["searchEndpoint"]["params"].as_str().map(str::to_string),
+                        clickable: endpoint.is_object(),
+                        params: endpoint["params"].as_str().map(str::to_string),
                         selected: f["status"].as_str() == Some("FILTER_STATUS_SELECTED"),
                         disabled: f["status"].as_str() == Some("FILTER_STATUS_DISABLED"),
+                        tooltip: f["tooltip"].as_str().map(str::to_string),
                     })
                 })
                 .collect(),
