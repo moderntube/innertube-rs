@@ -27,6 +27,44 @@ pub struct VideoDetails {
     /// Whether the signed-in user is subscribed to the uploader (always false when
     /// anonymous).
     pub subscribed: bool,
+    /// Every channel of a collab video, in YouTube's order; empty for a single-channel
+    /// video. `channel` then holds the combined title ("A and B") and `channel_id` the first.
+    pub collaborators: Vec<Collaborator>,
+}
+
+/// One channel from a collab video's "Collaborators" dialog.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct Collaborator {
+    pub channel_id: String,
+    pub name: String,
+    /// Handle and subscriber count (e.g. `"@handle • 13.9K subscribers"`).
+    pub subtitle: Option<String>,
+    pub avatar: Option<String>,
+}
+
+/// The channels in a "Collaborators" `showDialogCommand`'s list.
+fn collaborators(dialog: &Value) -> Vec<Collaborator> {
+    let items = &dialog["showDialogCommand"]["panelLoadingStrategy"]["inlineContent"]["dialogViewModel"]
+        ["customContent"]["listViewModel"]["listItems"];
+    let Some(items) = items.as_array() else { return Vec::new() };
+    items
+        .iter()
+        .filter_map(|it| {
+            let item = &it["listItemViewModel"];
+            let channel_id = item["title"]["commandRuns"].as_array()?.iter().find_map(|r| {
+                r["onTap"]["innertubeCommand"]["browseEndpoint"]["browseId"].as_str()
+            })?;
+            Some(Collaborator {
+                channel_id: channel_id.to_string(),
+                name: item["title"]["content"].as_str()?.to_string(),
+                // The subtitle wraps its parts in bidi isolation marks.
+                subtitle: item["subtitle"]["content"]
+                    .as_str()
+                    .map(|s| s.chars().filter(|c| !matches!(c, '\u{200e}' | '\u{2068}' | '\u{2069}')).collect()),
+                avatar: last_thumb(&item["leadingAccessory"]["avatarViewModel"]["image"]),
+            })
+        })
+        .collect()
 }
 
 /// Parse the watch-next data YouTube renders into a watch page as `ytInitialData`. It has
@@ -72,6 +110,16 @@ pub(crate) fn parse_next(v: &Value) -> VideoDetails {
             out.channel_avatar = out.channel_avatar.take().or_else(|| last_thumb(&owner["thumbnail"]));
             out.subscriber_count =
                 out.subscriber_count.take().or_else(|| text(&owner["subscriberCountText"]));
+            // A collab owner has no title runs: `attributedTitle` reads "A and B" and its
+            // endpoint opens the dialog listing each channel.
+            if out.collaborators.is_empty() {
+                out.collaborators = collaborators(&owner["navigationEndpoint"]);
+            }
+            if let Some(first) = out.collaborators.first() {
+                out.channel = out.channel.take().or_else(|| owner["attributedTitle"]["content"].as_str().map(String::from));
+                out.channel_id = out.channel_id.take().or_else(|| Some(first.channel_id.clone()));
+                out.channel_avatar = out.channel_avatar.take().or_else(|| first.avatar.clone());
+            }
             out.description = out.description.take().or_else(|| {
                 s["attributedDescription"]["content"].as_str().map(str::to_string)
             });
