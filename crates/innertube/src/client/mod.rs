@@ -20,7 +20,7 @@ pub use api::{
     find_live_chat_continuation, find_live_chat_send, find_not_interested_token,
     find_reply_params, find_str, parse_comments,
     AccountInfo, Caption,
-    CaptionTrack, Channel, ChatBadge, ChatKind, ChatMessage, ChatReplay, ChatRun, ChatSendResult, Comment, Comments, LiveChat,
+    CaptionTrack, Channel, ChatBadge, Collaborator, ChatKind, ChatMessage, ChatReplay, ChatRun, ChatSendResult, Comment, Comments, LiveChat,
     Notification, Playlist,
     PlaylistContents, ResolvedUrl, SearchChip, SearchFilter, SearchFilterGroup, SearchItem, SearchResults, VideoDetails,
 };

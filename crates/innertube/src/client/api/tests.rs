@@ -910,6 +910,38 @@ fn parse_next_extracts_title_channel_and_comments_token() {
     assert!(matches!(&d.related[0], SearchItem::Video { id, .. } if id == "relatedXYZ"));
 }
 
+// A collab owner as the watch page ships it (2026-11): no title runs, an "A and B"
+// attributedTitle, and a navigationEndpoint dialog with one list item per channel.
+#[test]
+fn a_collab_owner_yields_every_channel_and_the_combined_title() {
+    let item = |name: &str, id: &str, handle: &str| {
+        json!({ "listItemViewModel": {
+            "title": { "content": name, "commandRuns": [{ "startIndex": 0, "onTap": { "innertubeCommand": {
+                "browseEndpoint": { "browseId": id }
+            }}}]},
+            "subtitle": { "content": format!("\u{200e}\u{2068}{handle}\u{2069} \u{2022} \u{2068}13.9K subscribers\u{2069}") },
+            "leadingAccessory": { "avatarViewModel": { "image": { "sources": [{ "url": format!("https://yt3/{id}.jpg") }] } } }
+        }})
+    };
+    let dialog = json!({ "showDialogCommand": { "panelLoadingStrategy": { "inlineContent": { "dialogViewModel": {
+        "header": { "dialogHeaderViewModel": { "headline": { "content": "Collaborators" } } },
+        "customContent": { "listViewModel": { "listItems": [item("Alpha", "UCa", "@alpha"), item("Beta", "UCb", "@beta")] } }
+    }}}}});
+    let v = json!({ "contents": [{ "videoSecondaryInfoRenderer": {
+        "owner": { "videoOwnerRenderer": {
+            "navigationEndpoint": dialog,
+            "attributedTitle": { "content": "Alpha and Beta" }
+        }}
+    }}]});
+    let d = parse_next(&v);
+    assert_eq!(d.channel.as_deref(), Some("Alpha and Beta"));
+    assert_eq!(d.channel_id.as_deref(), Some("UCa"));
+    assert_eq!(d.channel_avatar.as_deref(), Some("https://yt3/UCa.jpg"));
+    let got: Vec<_> = d.collaborators.iter().map(|c| (c.channel_id.as_str(), c.name.as_str())).collect();
+    assert_eq!(got, [("UCa", "Alpha"), ("UCb", "Beta")]);
+    assert_eq!(d.collaborators[1].subtitle.as_deref(), Some("@beta \u{2022} 13.9K subscribers"));
+}
+
 #[test]
 fn video_details_parses_owner_and_description() {
     // Owner fields live under owner.videoOwnerRenderer; subscribeButton is its sibling.

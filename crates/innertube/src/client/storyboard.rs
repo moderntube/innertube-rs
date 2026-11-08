@@ -17,7 +17,8 @@ struct StoryboardLevel {
     thumb_h: u32,
     cols: u32,
     rows: u32,
-    /// Time between consecutive thumbnails (ms). 0 on the legacy level-0 "default" sheet.
+    /// Time between consecutive thumbnails (ms). 0 on the legacy level-0 "default" sheet when
+    /// the duration is unknown.
     interval_ms: u32,
     total_frames: u32,
     /// Base url with `$L` already substituted to this level; still has `$N`/`?sqp=`.
@@ -41,8 +42,9 @@ pub struct StoryboardThumb {
 impl Storyboard {
     /// Parse a `playerStoryboardSpecRenderer.spec` string (`base|level0|level1|…`,
     /// each level `w#h#totalFrames#cols#rows#intervalMs#name#sigh`). `fine_level` is the
-    /// renderer's `fineScrubbingRecommendedLevel`/`recommendedLevel` (clamped).
-    pub fn parse(spec: &str, fine_level: Option<usize>) -> Option<Storyboard> {
+    /// renderer's `fineScrubbingRecommendedLevel`/`recommendedLevel` (clamped). A short video
+    /// ships only the legacy level 0, whose frames span `duration_ms` evenly.
+    pub fn parse(spec: &str, fine_level: Option<usize>, duration_ms: Option<i64>) -> Option<Storyboard> {
         let mut parts = spec.split('|');
         let base_tpl = parts.next()?;
         let mut levels = Vec::new();
@@ -51,13 +53,21 @@ impl Storyboard {
             if f.len() != 8 {
                 continue;
             }
+            let total_frames: u32 = f[2].parse().ok()?;
+            let interval_ms = match f[5].parse().ok()? {
+                0 => duration_ms
+                    .and_then(|d| u32::try_from(d).ok())
+                    .filter(|_| total_frames > 0)
+                    .map_or(0, |d| d.div_ceil(total_frames)),
+                n => n,
+            };
             levels.push(StoryboardLevel {
                 thumb_w: f[0].parse().ok()?,
                 thumb_h: f[1].parse().ok()?,
-                total_frames: f[2].parse().ok()?,
+                total_frames,
                 cols: f[3].parse().ok()?,
                 rows: f[4].parse().ok()?,
-                interval_ms: f[5].parse().ok()?,
+                interval_ms,
                 base: base_tpl.replace("$L", &i.to_string()),
                 name: f[6].to_string(),
                 sigh: f[7].to_string(),
@@ -159,7 +169,7 @@ mod tests {
 
     #[test]
     fn every_playback_time_maps_to_a_cell_inside_a_sheet_that_never_goes_backwards() {
-        let sb = Storyboard::parse(SPEC, Some(2)).expect("parse");
+        let sb = Storyboard::parse(SPEC, Some(2), Some(216_000)).expect("parse");
         let (cols, rows, w, h) = (5, 5, 160, 90);
         let mut last_sheet = 0;
         for t in (-1_000..=300_000).step_by(250) {
@@ -171,6 +181,18 @@ mod tests {
             assert!(sheet >= last_sheet, "sheet {sheet} after {last_sheet} at {t} ms");
             last_sheet = sheet;
         }
+    }
+
+    // The spec a 13 s video ships: only the legacy level, 100 frames over the whole video.
+    #[test]
+    fn a_legacy_only_storyboard_spreads_its_frames_over_the_duration() {
+        let spec = "https://i.ytimg.com/sb/X/storyboard3_L$L/$N.jpg?sqp=Q|48#27#100#10#10#0#default#rs$S0";
+        let sb = Storyboard::parse(spec, Some(0), Some(13_000)).expect("parse");
+        let first = sb.thumbnail_at(0).expect("a thumbnail at the start");
+        let last = sb.thumbnail_at(12_999).expect("a thumbnail at the end");
+        assert_eq!((first.x, first.y, first.w, first.h), (0, 0, 48, 27));
+        assert_eq!((last.x, last.y), (9 * 48, 9 * 27));
+        assert!(last.url.contains("/default.jpg") && last.url.ends_with("&sigh=rs$S0"), "{}", last.url);
     }
 
     #[test]

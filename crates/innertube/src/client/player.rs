@@ -341,7 +341,7 @@ impl PlayerResponse {
             });
         let storyboard = raw.storyboards.as_ref().and_then(|s| s.player_storyboard_spec_renderer.as_ref()).and_then(|r| {
             let spec = r.spec.as_deref()?;
-            Storyboard::parse(spec, r.fine_scrubbing_recommended_level.or(r.recommended_level))
+            Storyboard::parse(spec, r.fine_scrubbing_recommended_level.or(r.recommended_level), duration_ms)
         });
         let live_storyboard = raw
             .storyboards
