@@ -66,7 +66,7 @@ pub use client::{
     LiveStoryboard, Navigation, PlayerOptions, PlayerResponse, Storyboard, StoryboardThumb,
     // Typed read models
     AccountInfo, Caption, CaptionTrack, Channel, ChannelSort, ChannelTab, ChatBadge, ChatKind, ChatMessage, ChatReplay, ChatRun,
-    ChatSendResult, Comment, Comments, LiveChat,
+    ChatSendResult, Collaborator, Comment, Comments, LiveChat,
     Notification, Playlist, PlaylistContents, ResolvedUrl, SearchChip, SearchFilter, SearchFilterGroup, SearchItem,
     SearchResults, VideoDetails,
     // Shorts
